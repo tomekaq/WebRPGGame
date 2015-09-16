@@ -1,8 +1,11 @@
-﻿using System;
+﻿using FirebirdSql.Data.FirebirdClient;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebRPGGame.DataAccess;
 
 namespace WebRPGGame.Controllers.Account
 {
@@ -15,11 +18,43 @@ namespace WebRPGGame.Controllers.Account
         {
             return View();
         }
+
         public ActionResult Download()
         {
-          //  connectionString = DataAccess.DataAccess.CreateConectionString();
 
+            string connectionString = DataAccess.DataAccess.CreateConectionString(
+                @"C:\Users\user\Documents\Visual Studio 2013\Projects\WebRPGGame\WebRPGGame\DataAccess\RPGDatabase",
+                "SYSDBA", "masterkey", "WIN1250");
+            using (FbConnection conn = new FbConnection(connectionString))
+            {
+                conn.Open();
+                ObservableCollection<ModelView> observableCollection = new ObservableCollection<ModelView>();
+                var command = new FbCommand();
+                command.Connection = conn;
+                command.CommandText = "select h.name,h.level,h.strength,h.agility,h.defense from heroes h;";
+                command.ExecuteScalar();
+
+                using (var dataRead = command.ExecuteReader())
+                {
+                    while (dataRead.Read())
+                    {
+                        observableCollection.Add(
+                            new ModelView(dataRead.GetString(0).ToString(), 
+                                    int.Parse(dataRead.GetString(1)), 
+                                    int.Parse(dataRead.GetString(2)), 
+                                    int.Parse(dataRead.GetString(3)),
+                                    int.Parse(dataRead.GetString(4))));
+                    }
+                }
+                return null;
+                //return observableCollection;
+            }
+        }
+
+        public JsonResult SendGamerList() 
+        {
             return null;
         }
+
     }
 }

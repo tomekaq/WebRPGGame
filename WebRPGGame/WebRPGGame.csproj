@@ -132,6 +132,7 @@
     <Compile Include="Controllers\FightController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="DataAccess\DataAccess.cs" />
+    <Compile Include="DataAccess\ModelView.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
