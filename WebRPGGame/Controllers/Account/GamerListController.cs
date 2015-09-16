@@ -19,7 +19,7 @@ namespace WebRPGGame.Controllers.Account
             return View();
         }
 
-        public ActionResult Download()
+        public ObservableCollection<ModelView> GetInfo()
         {
 
             string connectionString = DataAccess.DataAccess.CreateConectionString(
@@ -39,21 +39,47 @@ namespace WebRPGGame.Controllers.Account
                     while (dataRead.Read())
                     {
                         observableCollection.Add(
-                            new ModelView(dataRead.GetString(0).ToString(), 
-                                    int.Parse(dataRead.GetString(1)), 
-                                    int.Parse(dataRead.GetString(2)), 
+                            new ModelView(dataRead.GetString(0).ToString(),
+                                    int.Parse(dataRead.GetString(1)),
+                                    int.Parse(dataRead.GetString(2)),
                                     int.Parse(dataRead.GetString(3)),
                                     int.Parse(dataRead.GetString(4))));
                     }
                 }
-                return null;
-                //return observableCollection;
+                return observableCollection;
             }
         }
 
-        public JsonResult SendGamerList() 
+        public JsonResult SendGamerList()
         {
-            return null;
+            ObservableCollection<ModelView> data = new ObservableCollection<ModelView>();
+            data = GetInfo();
+
+            try
+            {
+                int i = 0;
+                var len = data.Count;
+                while(i<len){
+                    SendOne(data[i]);
+                }
+                return Json(new { success = true},JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message);
+            }
+        }
+
+        public JsonResult SendOne(ModelView model)
+        {
+            try
+            {
+                return Json(new { success = true, model }, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
         }
 
     }
