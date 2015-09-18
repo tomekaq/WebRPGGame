@@ -44,6 +44,9 @@
       <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.4.8.0.0\lib\net45\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Monad">
+      <HintPath>..\packages\csharp-monad.0.0.4\lib\Monad.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />

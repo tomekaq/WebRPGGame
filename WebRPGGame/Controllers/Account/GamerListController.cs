@@ -61,6 +61,7 @@ namespace WebRPGGame.Controllers.Account
                 var len = data.Count;
                 while(i<len){
                     SendOne(data[i]);
+                    i++;
                 }
                 return Json(new { success = true},JsonRequestBehavior.AllowGet);
             }
