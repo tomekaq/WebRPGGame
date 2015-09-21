@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Monad.Parsec.Token.Numbers;
 using System.Threading;
 using ModelingObjectTask;
+using System.Net;
 
 namespace WebRPGGame.Controllers
 {
@@ -41,12 +42,12 @@ namespace WebRPGGame.Controllers
                 command1.Parameters.Add(param1);
 
                 FbDataReader reader = command1.ExecuteReader();
-                
+
 
 
                 return reader;
             }
-          //  return null;
+            //  return null;
         }
         public Hero CreateHero(string refinput)
         {
@@ -79,10 +80,11 @@ namespace WebRPGGame.Controllers
 
 
         }
-        public ActionResult Fight() 
+        public ActionResult Fight()
         {
 
             var HeroFirst = CreateHero("11");
+            var HeroSecond = CreateHero("13");
 
 
 
@@ -110,54 +112,50 @@ namespace WebRPGGame.Controllers
 
 
 
-
-
-            while (HeroFirst.IsAlive && Geralt.IsAlive)
+            int i = 0;
+            while (HeroFirst.IsAlive && HeroSecond.IsAlive)
             {
+                string message = "";
                 Thread.Sleep(50);
-                HeroFirst.Attack(Geralt);
-                Console.WriteLine("Xardas attack Geralt!");
+                HeroFirst.Attack(HeroSecond);
+                message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
+
+
                 Thread.Sleep(50);
-                Console.WriteLine("Xardas health: {0}", Xardas.HealthPointsNow);
+                Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
                 Thread.Sleep(50);
-                Console.WriteLine("Gerlat health: {0}", Geralt.HealthPointsNow);
-                if ((Xardas.IsAlive && Geralt.IsAlive))
+                Console.WriteLine("Gerlat health: {0}", HeroSecond.HealthPointsNow);
+                if ((HeroFirst.IsAlive && HeroSecond.IsAlive))
                 {
-                    Geralt.Attack(Xardas);
+                    HeroSecond.Attack(HeroFirst);
                     Thread.Sleep(50);
                     Console.WriteLine("Geralt attack Xardas!");
+                    message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
                     Thread.Sleep(50);
-                    Console.WriteLine("Xardas health: {0}", Xardas.HealthPointsNow);
-                    Thread.Sleep(50);
-                    Console.WriteLine("Gerlat health: {0}", Geralt.HealthPointsNow);
-                    superziolko.Apply(Geralt);
-                    //superziolko.Apply(Geralt);
-                    Console.WriteLine("Gerlat health po superziolku: {0}", Geralt.HealthPointsNow);
+                    Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
+
                 } i++;
 
             }
             Console.WriteLine("End fight!");
             Console.WriteLine("Who win?");
-            if (Xardas.IsAlive)
+            if (HeroFirst.IsAlive)
             {
-                if (!Geralt.head.Alive)
+                if (!HeroSecond.head.Alive)
                     Console.WriteLine("Xardas cut Geralt head!");
                 Console.WriteLine("Xardas win");
 
             }
             else
             {
-                if (!Xardas.head.Alive)
+                if (!HeroSecond.head.Alive)
                     Console.WriteLine("Geralt cut Xardas head!");
                 Console.WriteLine("Geralt win");
             }
 
 
 
-
-
             return null;
         }
-   
     }
 }
