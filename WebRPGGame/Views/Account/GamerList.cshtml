@@ -1,6 +1,61 @@
-﻿
+﻿<script>
 
+    $(document).ready(function () {
+        $("#button1").click(function () {
+            $.ajax({
+                url: '/GamerList/GetGamerList',
+                type: 'GET',
+                success: function (data) {
+                    console.log(data.model);
+                    load(data);
+                },
+                error: function (xhr) {
+                    console.log("Error with remove ");
+                }
+            })
+        });
+    });
+
+    function load(model) {
+        $('<div>' + model.model.Name + '</div>').appendTo('divTable').appendTo(0);
+        $('<div>' + model.model.Agility + '</div>').appendTo('.divCall2');
+        $(' < div > ' + model.model.Defense + '</div>').appendTo('.divCall3');
+        $('<div>' + model.model.Strength + '</div>').appendTo('.divCall4');
+        $('<div>' + '<input type="button" value = "wyzwij">').appendTo('.divCell5');
+    };
+</script>
+<style>
+    .div-table {
+        display: table;
+        width: auto;
+        background-color: #eee;
+        border: 1px solid #666666;
+        border-spacing: 5px; /*cellspacing:poor IE support for  this*/
+    }
+
+    .div-table-row {
+        display: table-row;
+        width: auto;
+        clear: both;
+    }
+
+    .div-table-col {
+        float: left; /*fix for  buggy browsers*/
+        display: table-column;
+        width: 200px;
+        background-color: #ccc;
+    }
+</style>
 <div>
+    <div id="myTable">
+        <div class="row" id="col1">
+            <div class="divCell" align="center">Name</div>
+            <div class="divCell">Agility</div>
+            <div class="divCell">Strength</div>
+            <div class="divCell">Defense</div>
+            <div class="divCell"> </div>
 
+        </div>
 
+    </div>
 </div>

@@ -142,7 +142,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\Account\GamerListController.cs" />
-    <Compile Include="Controllers\FightController.cs" />
+    <Compile Include="Controllers\Account\LoginController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\Fights\FightController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="DataAccess\ModelView.cs" />
@@ -262,6 +264,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\GamerList.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

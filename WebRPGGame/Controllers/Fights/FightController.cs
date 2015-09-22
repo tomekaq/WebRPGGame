@@ -52,7 +52,7 @@ namespace WebRPGGame.Controllers
         public Hero CreateHero(string refinput)
         {
             var ReadData = GetInfoHero(refinput);
-            if (ReadData["type"] == "Warrior")
+            if (1==1)//ReadData["type"] == "Warrior")
             {
                 Warrior Heroes = new Warrior()
                 {
@@ -64,7 +64,7 @@ namespace WebRPGGame.Controllers
                 };
                 return Heroes;
             }
-            if (ReadData["type"] == "Wizzard")
+            if (1==1)//ReadData["type"] == "Wizzard")
             {
                 Mag Heroes = new Mag()
                 {
@@ -80,6 +80,13 @@ namespace WebRPGGame.Controllers
 
 
         }
+
+        public JsonResult ServerMessage(string message)
+        {
+            return Json(new { success = true, message});
+
+        }
+
         public ActionResult Fight()
         {
 

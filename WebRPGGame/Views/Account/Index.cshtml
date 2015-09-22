@@ -15,8 +15,9 @@
 <input type="button" id="button2" value="Get info">
     <a><input type="text" id="textbox1" value="11" placeholder="first"></a>
     <a><input type="text" id="textbox2" value ="13" placeholder="second"></a>
-
+    <a><input type="text" id="textbox2" value="13" placeholder="second"></a>
     </div>
     @Html.Partial("~/Views/Account/GamerList.cshtml")
    @*@Html.Action("SendGamerList","GamerList")
-    @Html.Action("GetInfoHero", "Fight", new { ref1= 11,ref2=13})*@
+    Html.Action("GetInfoHero", "Fight", new { ref1= 11,ref2=13})
+@Html.Action("CallToChallenge", "Email", new { ref1 = 4, ref2 = 5 })*@

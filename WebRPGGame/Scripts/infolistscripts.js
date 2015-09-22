@@ -1,16 +1,27 @@
-﻿$('#button1').ready(function () {
-    $.ajax({
-        url: '/Account/GamerList/SendGamerList',
-        type: 'GET',
-        dataType: "json",
-        success: function (xhr) {
-            console.log(xhr.type);
-        },
-        error: function (xhr) {
-            console.log("Error with remove ");
-        }
-    });
-});
+﻿
+//$(document).on('click', '#button1', function () {
+//    $.ajax({
+//        url: '/Account/GamerList/SendGamerList',
+//        type: 'GET',
+//        dataType: "json",
+//        success: function (xhr) {
+//            console.log(xhr.type);
+//        },
+//        error: function (xhr) {
+//            console.log("Error with remove ");
+//        }
+//    });
+//});
+
+//$(document).ready(function () {
+//    $("#button1").click(function () {
+//        $.getJSON("/GamerList/GetGamerList", function (result) {
+//            $.each(result, function (i, field) {
+//                $("div").append(field + " ");
+//            });
+//        });
+//    });
+//});
 
 //$(document).on('click', '#button2', function () {
 

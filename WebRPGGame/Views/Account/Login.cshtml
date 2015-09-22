@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+<script>
+
+    $(document).on('click', '#submitButton', function () {
+
+        $.ajax({
+            url: "Login/Login",
+            type: 'POST',
+            data: { login: $("#loginbox"), password: $("#passbox") }
+
+        });
+    });
+
+
+
+</script>
+
+
+<h2>Login</h2>
+<input type ="text" id = "loginbox" placeholder = "email" />
+<input type ="text" id = "passbox" placeholder = "pasword" />
+<input type = "button" id = "submitButton" value ="loguj" />

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebRPGGame.DataAccess;
@@ -19,11 +20,29 @@ namespace WebRPGGame.Controllers.Account
             return View();
         }
 
-        public ObservableCollection<ModelView> GetInfo()
+        public JsonResult GetGamerList()
+        {
+            ObservableCollection<ModelView> data = new ObservableCollection<ModelView>();
+            data = GetGamerListFromDatabase();
+            int i =0;
+      
+                
+                var t = Task.Run(() =>
+                {
+                    var ts = SendOne(data[i]);
+                    return ts;
+                });
+               // i++;
+
+
+                return SendOne(data[i]);
+        }
+
+        public ObservableCollection<ModelView> GetGamerListFromDatabase()
         {
 
             string connectionString = DataAccess.DataAccess.CreateConectionString(
-                @"C:\Users\user\Documents\Visual Studio 2013\Projects\WebRPGGame\WebRPGGame\DataAccess\RPGDatabase",
+                @"C:\Users\user\Documents\Visual Studio 2013\Projects\WebRPGGame\WebRPGGame\DataAccess\RPGDatabase.fdb",
                 "SYSDBA", "masterkey", "WIN1250");
             using (FbConnection conn = new FbConnection(connectionString))
             {
@@ -39,35 +58,17 @@ namespace WebRPGGame.Controllers.Account
                     while (dataRead.Read())
                     {
                         observableCollection.Add(
-                            new ModelView(dataRead.GetString(0).ToString(),
-                                    int.Parse(dataRead.GetString(1)),
-                                    int.Parse(dataRead.GetString(2)),
-                                    int.Parse(dataRead.GetString(3)),
-                                    int.Parse(dataRead.GetString(4))));
+                            new ModelView()
+                            {
+                                Name = dataRead.GetString(0).ToString(),
+                                Level = int.Parse(dataRead.GetString(1)),
+                                Strength = int.Parse(dataRead.GetString(2)),
+                                Agility = int.Parse(dataRead.GetString(3)),
+                                Defense = int.Parse(dataRead.GetString(4))
+                            });
                     }
                 }
                 return observableCollection;
-            }
-        }
-
-        public JsonResult SendGamerList()
-        {
-            ObservableCollection<ModelView> data = new ObservableCollection<ModelView>();
-            data = GetInfo();
-
-            try
-            {
-                int i = 0;
-                var len = data.Count;
-                while(i<len){
-                    SendOne(data[i]);
-                    i++;
-                }
-                return Json(new { success = true},JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                return Json(e.Message);
             }
         }
 
