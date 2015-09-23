@@ -16,6 +16,5 @@ namespace WebRPGGame.Controllers.Home
             return View();
         }
 
-        
     }
 }

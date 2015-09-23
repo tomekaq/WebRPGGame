@@ -33,7 +33,7 @@ namespace WebRPGGame.Controllers.Account
             });
             // i++;
 
-            return SendOne(data[i]);
+            return Json(new { success = true, data }, JsonRequestBehavior.AllowGet);
         }
         public ObservableCollection<string> GetUsers()
         {

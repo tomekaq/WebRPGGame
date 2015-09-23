@@ -1,33 +1,47 @@
 ﻿<script>
 
     $(document).ready(function () {
+        var t = 0;
         $("#button1").click(function () {
             $.ajax({
                 url: '/GamerList/GetGamerList',
                 type: 'GET',
-                success: function (data) {
-                    console.log(data.model);
-                    load(data);
+                success: function (response) {
+
+                    $.map(response, function (k,k) {
+               
+                        load(k, 0,t);
+                        t++;
+                    });
                 },
                 error: function (xhr) {
-                    console.log("Error with remove ");
+                    console.log("Error with get users list.");
                 }
             })
         });
     });
 
+    function load(model,i,t) {
+        if (t == 1) {
+          
+        console.log(model[0].User);
 
+        var row = '<tr><td>' + model[i].User + '</td><td>'
+            + model[i].Name + '</td><td>'
+            + model[i].Level + '</td><td>'
+            + model[i].Agility + '</td><td>'
+            + model[i].Defense + '</td><td>'
+            + model[i].Strength + '</td><td>'
+            + '<input type="button" value = "wyzwij">' + '</td></tr>';
 
-    function load(model) {
-       var row = '<tr><td>' + model.model.User + '</td><td>' + model.model.Name + '</td><td>' + model.model.Agility + '</td><td>' + model.model.Defense + '</td><td>' + model.model.Strength + '</td><td>' + '<input type="button" value = "wyzwij">' + '</td></tr>';
-              $row = $(row),
+        $row = $(row),
               resort = true;
-            $('table')
-              .find('tbody').append($row)
-              .trigger('addRows', [$row, resort]);
-            return false;
-        };
-
+        $('table')
+          .find('tbody').append($row)
+          .trigger('addRows', [$row, resort]);
+        return false;
+    }
+    };
 
 </script>
 
@@ -57,6 +71,7 @@
     <tr>
         <td>User</td>
         <td>Name</td>
+        <td>Level</td>
         <td>Agility</td>
         <td>Strength</td>
         <td>Defense</td>

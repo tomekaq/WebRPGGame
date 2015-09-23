@@ -12,7 +12,5 @@ namespace WebRPGGame.Controllers.Account
         {
             return View();
         }
-
-
     }
 }
