@@ -13,5 +13,7 @@ namespace WebRPGGame.DataAccess
         public int Agility { get; set; }
         public int Defense { get; set; }
         public int Mana { get; set; }
+
+        public string User { get; set; }
     }
 }
