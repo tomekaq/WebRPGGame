@@ -16,47 +16,50 @@
         });
     });
 
+
+
     function load(model) {
-        var table = $('#myTable');
+       var row = '<tr><td>' + model.model.User + '</td><td>' + model.model.Name + '</td><td>' + model.model.Agility + '</td><td>' + model.model.Defense + '</td><td>' + model.model.Strength + '</td><td>' + '<input type="button" value = "wyzwij">' + '</td></tr>';
+              $row = $(row),
+              resort = true;
+            $('table')
+              .find('tbody').append($row)
+              .trigger('addRows', [$row, resort]);
+            return false;
+        };
 
-        table.appendTo()
 
-        $('#myTable').children(0).children(0).append('<div>' + model.model.Name + '</div>');
-        $('#myTable').children(0).children(1).append('<div>' + model.model.Agility + '</div>');
-        $('#myTable').children(0).children(2).append('<div>' + model.model.Defense + '</div>');
-        $('#myTable').children(0).children(3).append('<div>' + model.model.Strength + '</div>');
-        $('#myTable').children(0).children(4).append('<div>' + '<input type="button" value = "wyzwij">' + '</div>');
-   
-    };
 </script>
 
 <style>
     .myTable {
         display: table;
+        width: 100px;
+        border: 1px solid #000000;
     }
 
     .tableRow {
-        width:30px;
+        width: 30px;
         height: 20px;
         display: table-row;
     }
 
     .tableCell {
         float: left;
-        width:100px;
+        width: 100px;
         border: 1px solid #000000;
         display: table-cell;
-
     }
 </style>
 
-<div id="myTable">
-    <div class="tableRow" id="col1">
-        <div class="tableCell">User</div>
-        <div class="tableCell">Name</div>
-        <div class="tableCell">Agility</div>
-        <div class="tableCell">Strength</div>
-        <div class="tableCell">Defense</div>
-        <div class="tableCell">&nbsp; </div>
-    </div>
-</div>
+<a> </a>
+<table border="1" style="background-color:#FFFFFF;border-collapse:collapse;border:1px solid #000000;color:#000000;width:80%" cellpadding="2" cellspacing="2">
+    <tr>
+        <td>User</td>
+        <td>Name</td>
+        <td>Agility</td>
+        <td>Strength</td>
+        <td>Defense</td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
