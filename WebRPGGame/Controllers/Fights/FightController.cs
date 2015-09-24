@@ -1,14 +1,15 @@
-﻿using WebRPGGame.DataAccess;
-using FirebirdSql.Data.FirebirdClient;
+﻿using FirebirdSql.Data.FirebirdClient;
+using ModelingObjectTask;
+using Monad.Parsec.Token.Numbers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
-using Monad.Parsec.Token.Numbers;
-using System.Threading;
-using ModelingObjectTask;
-using System.Net;
+using WebRPGGame.DataAccess;
+using System.Threading.Tasks;
 
 namespace WebRPGGame.Controllers
 {
@@ -95,7 +96,7 @@ namespace WebRPGGame.Controllers
             var enemy = GetInfoHero(ID);
             
 
-            return Json(new { success = true});
+            return Json(new { success = true,enemy},JsonRequestBehavior.AllowGet);
         }
 
 

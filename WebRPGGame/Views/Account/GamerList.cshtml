@@ -40,13 +40,13 @@
 
     $("body").on("click", "input", function () {
         var th = $(this).context.id;
-        //console.log("cos kliknieto", th);
+        console.log("cos kliknieto", th);
 
         $(this).click(function () {
             $.ajax({
-                url: '/GamerList/CallToFight',
+                url: '/Fight/CallToFight',
                 type: 'POST',
-                data: { ref1: th },
+                data: { ID: th },
                 success: function (response) {
 
                     console.log(response.ref1);
