@@ -20,18 +20,10 @@ namespace WebRPGGame.Controllers.Account
             return View();
         }
 
-        public JsonResult GetGamerList()
+        public JsonResult GetGamerList(int ref1)
         {
             ObservableCollection<ModelView> data = new ObservableCollection<ModelView>();
-            data = GetGamerListFromDatabase();
-            int i = 0;
-
-            var t = Task.Run(() =>
-            {
-                var ts = SendOne(data[i]);
-                return ts;
-            });
-            // i++;
+            data = GetGamerListFromDatabase(ref1);
 
             return Json(new { success = true, data }, JsonRequestBehavior.AllowGet);
         }
@@ -60,7 +52,7 @@ namespace WebRPGGame.Controllers.Account
                 return observableCollection;
             }
         }
-        public ObservableCollection<ModelView> GetGamerListFromDatabase()
+        public ObservableCollection<ModelView> GetGamerListFromDatabase(int ref1)
         {
 
             string connectionString = DataAccess.DataAccess.CreateConectionString(
@@ -72,8 +64,9 @@ namespace WebRPGGame.Controllers.Account
                 ObservableCollection<ModelView> observableCollection = new ObservableCollection<ModelView>();
                 var command = new FbCommand();
                 command.Connection = conn;
-               string sqlCommand = @"select u.login,h.name,h.level,h.strength,h.agility,h.defense from users u join heroes h on u.ref = h.""USER""";
-         command.CommandText = sqlCommand;
+                string sqlCommand = @"select u.ref,u.login,h.name,h.level,h.strength,h.agility,h.defense from users u join heroes h on u.ref = h.""USER"" where u.ref is distinct from @ref";
+                command.Parameters.AddWithValue("@ref", ref1);
+                command.CommandText = sqlCommand;
                 command.ExecuteScalar();
 
                 using (var dataRead = command.ExecuteReader())
@@ -83,12 +76,13 @@ namespace WebRPGGame.Controllers.Account
                         observableCollection.Add(
                             new ModelView()
                             {
-                                User = dataRead.GetString(0).ToString(),
-                                Name = dataRead.GetString(1).ToString(),
-                                Level = int.Parse(dataRead.GetString(2)),
-                                Strength = int.Parse(dataRead.GetString(3)),
-                                Agility = int.Parse(dataRead.GetString(4)),
-                                Defense = int.Parse(dataRead.GetString(5))
+                                REF = dataRead.GetString(0).ToString(),
+                                User = dataRead.GetString(1).ToString(),
+                                Name = dataRead.GetString(2).ToString(),
+                                Level = int.Parse(dataRead.GetString(3)),
+                                Strength = int.Parse(dataRead.GetString(4)),
+                                Agility = int.Parse(dataRead.GetString(5)),
+                                Defense = int.Parse(dataRead.GetString(6))
                             });
                     }
                 }

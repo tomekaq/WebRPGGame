@@ -266,6 +266,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\GamerList.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Fights\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

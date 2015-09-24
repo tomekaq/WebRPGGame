@@ -38,86 +38,78 @@ namespace WebRPGGame.Controllers
 
                 var command1 = new FbCommand();
                 command1.Connection = conn;
-                command1.CommandText = string.Format("select name, agility,strength,type, defense from heroes where ref = @REFERENSE1");
+                command1.CommandText = string.Format(
+                                          @"execute procedure GetHeroInfo(@REFERENSE1);");
                 command1.Parameters.Add(param1);
 
                 FbDataReader reader = command1.ExecuteReader();
-
-
 
                 return reader;
             }
             //  return null;
         }
-        public Hero CreateHero(string refinput)
+        public Warrior CreateWarrior(string refinput)
         {
             var ReadData = GetInfoHero(refinput);
-            if (1==1)//ReadData["type"] == "Warrior")
-            {
-                Warrior Heroes = new Warrior()
-                {
-                    Agility = int.Parse(ReadData["agility"].ToString()),
-                    DefensePoint = int.Parse(ReadData["defense"].ToString()),
-                    Strength = int.Parse(ReadData["strength"].ToString()),
-                    Name = ReadData["name"].ToString(),
-                    HealthPoints = int.Parse(ReadData["agility"].ToString())
-                };
-                return Heroes;
-            }
-            if (1==1)//ReadData["type"] == "Wizzard")
-            {
-                Mag Heroes = new Mag()
-                {
-                    Agility = int.Parse(ReadData["agility"].ToString()),
-                    DefensePoint = int.Parse(ReadData["defense"].ToString()),
-                    Strength = int.Parse(ReadData["strength"].ToString()),
-                    Name = ReadData["name"].ToString(),
-                    HealthPoints = int.Parse(ReadData["agility"].ToString())
-                };
-                return Heroes;
-            }
-            return null;
 
+            Warrior Heroes = new Warrior()
+            {
+                Agility = int.Parse(ReadData["agility"].ToString()),
+                DefensePoint = int.Parse(ReadData["defense"].ToString()),
+                Strength = int.Parse(ReadData["strength"].ToString()),
+                Name = ReadData["name"].ToString(),
+                HealthPoints = int.Parse(ReadData["agility"].ToString())
+            };
+            return Heroes;
+        }
 
+        public Mag CreateWizzard(string refinput)
+        {
+            var ReadData = GetInfoHero(refinput);
+
+            Mag Heroes = new Mag()
+            {
+                Agility = int.Parse(ReadData["agility"].ToString()),
+                DefensePoint = int.Parse(ReadData["defense"].ToString()),
+                Strength = int.Parse(ReadData["strength"].ToString()),
+                Name = ReadData["name"].ToString(),
+                HealthPoints = int.Parse(ReadData["agility"].ToString())
+            };
+            return Heroes;
+        }
+
+        public JsonResult CreateWarrior(int ref1)
+        {
+            var info = CreateWarrior(ref1);
+
+            return Json(new { success = true,info},JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ServerMessage(string message)
         {
-            return Json(new { success = true, message});
-
+            return Json(new { success = true, message });
         }
+
+        public JsonResult CallToFight(string ID)
+        {
+            var enemy = GetInfoHero(ID);
+            
+
+            return Json(new { success = true});
+        }
+
+
+
+
+
+
+
+
 
         public ActionResult Fight()
         {
-
-            var HeroFirst = CreateHero("11");
-            var HeroSecond = CreateHero("13");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            var HeroFirst = CreateWarrior("11");
+            var HeroSecond = CreateWizzard("13");
 
             int i = 0;
             while (HeroFirst.IsAlive && HeroSecond.IsAlive)
@@ -127,40 +119,39 @@ namespace WebRPGGame.Controllers
                 HeroFirst.Attack(HeroSecond);
                 message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
 
+                Thread.Sleep(50);
+           //     Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
+                Thread.Sleep(50);
+ 
 
-                Thread.Sleep(50);
-                Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
-                Thread.Sleep(50);
-                Console.WriteLine("Gerlat health: {0}", HeroSecond.HealthPointsNow);
+                
+                //    Console.WriteLine("Gerlat health: {0}", HeroSecond.HealthPointsNow);
                 if ((HeroFirst.IsAlive && HeroSecond.IsAlive))
                 {
                     HeroSecond.Attack(HeroFirst);
                     Thread.Sleep(50);
                     Console.WriteLine("Geralt attack Xardas!");
-                    message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
+                  message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
                     Thread.Sleep(50);
-                    Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
+                  //  Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
 
                 } i++;
-
             }
-            Console.WriteLine("End fight!");
-            Console.WriteLine("Who win?");
+            //Console.WriteLine("End fight!");
+            //Console.WriteLine("Who win?");
             if (HeroFirst.IsAlive)
             {
-                if (!HeroSecond.head.Alive)
-                    Console.WriteLine("Xardas cut Geralt head!");
-                Console.WriteLine("Xardas win");
+                //if (!HeroSecond.head.Alive)
+              //      Console.WriteLine("Xardas cut Geralt head!");
+                //Console.WriteLine("Xardas win");
 
             }
             else
             {
-                if (!HeroSecond.head.Alive)
-                    Console.WriteLine("Geralt cut Xardas head!");
-                Console.WriteLine("Geralt win");
+                //if (!HeroSecond.head.Alive)
+                  //  Console.WriteLine("Geralt cut Xardas head!");
+                //Console.WriteLine("Geralt win");
             }
-
-
 
             return null;
         }

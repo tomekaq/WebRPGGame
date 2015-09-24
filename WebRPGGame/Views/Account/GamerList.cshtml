@@ -5,17 +5,14 @@
         $("#button1").click(function () {
             $.ajax({
                 url: '/GamerList/GetGamerList',
-                type: 'GET',
+                type: 'POST',
+                data: { ref1: 3 },
                 success: function (response) {
-
 
                     console.log(response.data.length);
                     for (i = 0; i < response.data.length; i++) {
                         load(response.data, i);
                     }
-
-
-                    //});
                 },
                 error: function (xhr) {
                     console.log("Error with get users list.");
@@ -32,16 +29,35 @@
             + data[i].Agility + '</td><td>'
             + data[i].Defense + '</td><td>'
             + data[i].Strength + '</td><td>'
-            + '<input type="button" value = "wyzwij">' + '</td></tr>';
+            + '<input type="button" id ="' + data[i].REF + '"' + 'value = "wyzwij">' + '</td></tr>';
 
         $row = $(row),
               resort = false;
         $('table')
-          .find('tbody').append($row)
-          .trigger('addRows', [$row, resort]);
+          .append($row);
         return false;
-        //   }
     };
+
+    $("body").on("click", "input", function () {
+        var th = $(this).context.id;
+        //console.log("cos kliknieto", th);
+
+        $(this).click(function () {
+            $.ajax({
+                url: '/GamerList/CallToFight',
+                type: 'POST',
+                data: { ref1: th },
+                success: function (response) {
+
+                    console.log(response.ref1);
+                },
+                error: function (xhr) {
+                    console.log("Error with get users list.");
+                }
+            })
+        });
+
+    });
 
 </script>
 

@@ -15,5 +15,7 @@ namespace WebRPGGame.DataAccess
         public int Mana { get; set; }
 
         public string User { get; set; }
+
+        public string REF { get; set; }
     }
 }

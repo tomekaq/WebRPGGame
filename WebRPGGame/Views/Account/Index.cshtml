@@ -11,13 +11,17 @@
 
 <h2>Account</h2>
 <div>
-<input type="button" id="button1" value="Pobierz liste graczy">
-@*<input type="button" id="button2" value="Get info">
-    <a><input type="text" id="textbox1" value="11" placeholder="first"></a>
-    <a><input type="text" id="textbox2" value ="13" placeholder="second"></a>
-    <a><input type="text" id="textbox2" value="13" placeholder="second"></a>*@
-    </div>
-    @Html.Partial("~/Views/Account/GamerList.cshtml")
-   @*@Html.Action("SendGamerList","GamerList")
+    <button id="button1">
+        Pobierz liste graczy
+    </button>
+
+    @*<input type="button" id="button2" value="Get info">
+        <a><input type="text" id="textbox1" value="11" placeholder="first"></a>
+        <a><input type="text" id="textbox2" value ="13" placeholder="second"></a>
+        <a><input type="text" id="textbox2" value="13" placeholder="second"></a>*@
+</div>
+
+@Html.Partial("~/Views/Account/GamerList.cshtml")
+@*@Html.Action("SendGamerList","GamerList")
     Html.Action("GetInfoHero", "Fight", new { ref1= 11,ref2=13})
-@Html.Action("CallToChallenge", "Email", new { ref1 = 4, ref2 = 5 })*@
+    @Html.Action("CallToChallenge", "Email", new { ref1 = 4, ref2 = 5 })*@
