@@ -8,11 +8,14 @@
                 type: 'GET',
                 success: function (response) {
 
-                    $.map(response, function (k,k) {
-               
-                        load(k, 0,t);
-                        t++;
-                    });
+
+                    console.log(response.data.length);
+                    for (i = 0; i < response.data.length; i++) {
+                        load(response.data, i);
+                    }
+
+
+                    //});
                 },
                 error: function (xhr) {
                     console.log("Error with get users list.");
@@ -21,26 +24,23 @@
         });
     });
 
-    function load(model,i,t) {
-        if (t == 1) {
-          
-        console.log(model[0].User);
+    function load(data, i) {
 
-        var row = '<tr><td>' + model[i].User + '</td><td>'
-            + model[i].Name + '</td><td>'
-            + model[i].Level + '</td><td>'
-            + model[i].Agility + '</td><td>'
-            + model[i].Defense + '</td><td>'
-            + model[i].Strength + '</td><td>'
+        var row = '<tr><td>' + data[i].User + '</td><td>'
+            + data[i].Name + '</td><td>'
+            + data[i].Level + '</td><td>'
+            + data[i].Agility + '</td><td>'
+            + data[i].Defense + '</td><td>'
+            + data[i].Strength + '</td><td>'
             + '<input type="button" value = "wyzwij">' + '</td></tr>';
 
         $row = $(row),
-              resort = true;
+              resort = false;
         $('table')
           .find('tbody').append($row)
           .trigger('addRows', [$row, resort]);
         return false;
-    }
+        //   }
     };
 
 </script>
@@ -64,10 +64,28 @@
         border: 1px solid #000000;
         display: table-cell;
     }
+
+    table {
+        background-color: #FFFFFF;
+        border-collapse: collapse;
+        border: 1px solid #000000;
+        color: #000000;
+        width: 100%;
+    }
+
+    tr {
+        width: 120px;
+    }
+
+    td {
+        border: 1px solid #000000;
+        height: 10px;
+        width: 120px;
+    }
 </style>
 
 <a> </a>
-<table border="1" style="background-color:#FFFFFF;border-collapse:collapse;border:1px solid #000000;color:#000000;width:80%" cellpadding="2" cellspacing="2">
+<table>
     <tr>
         <td>User</td>
         <td>Name</td>
