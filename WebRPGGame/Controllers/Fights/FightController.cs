@@ -47,21 +47,22 @@ namespace WebRPGGame.Controllers
 
                 return reader;
             }
-            //  return null;
         }
         public Warrior CreateWarrior(string refinput)
         {
-            var ReadData = GetInfoHero(refinput);
-
-            Warrior Heroes = new Warrior()
+            using (var ReadData = GetInfoHero(refinput))
             {
-                Agility = int.Parse(ReadData["agility"].ToString()),
-                DefensePoint = int.Parse(ReadData["defense"].ToString()),
-                Strength = int.Parse(ReadData["strength"].ToString()),
-                Name = ReadData["name"].ToString(),
-                HealthPoints = int.Parse(ReadData["agility"].ToString())
-            };
-            return Heroes;
+                ReadData.Read();
+                Warrior Heroes = new Warrior()
+                   {
+                       Agility = int.Parse(ReadData["agility"].ToString()),
+                       DefensePoint = int.Parse(ReadData["defense"].ToString()),
+                       Strength = int.Parse(ReadData["strength"].ToString()),
+                       Name = ReadData["name"].ToString(),
+                       HealthPoints = int.Parse(ReadData["agility"].ToString())
+                   };
+                return Heroes;
+            }
         }
 
         public Mag CreateWizzard(string refinput)
@@ -83,7 +84,7 @@ namespace WebRPGGame.Controllers
         {
             var info = CreateWarrior(ref1);
 
-            return Json(new { success = true,info},JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, info }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ServerMessage(string message)
@@ -94,9 +95,9 @@ namespace WebRPGGame.Controllers
         public JsonResult CallToFight(string ID)
         {
             var enemy = GetInfoHero(ID);
-            
 
-            return Json(new { success = true,enemy},JsonRequestBehavior.AllowGet);
+
+            return Json(new { success = true, enemy }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -121,20 +122,21 @@ namespace WebRPGGame.Controllers
                 message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
 
                 Thread.Sleep(50);
-           //     Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
+                //     Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
                 Thread.Sleep(50);
- 
 
-                
+
+
+
                 //    Console.WriteLine("Gerlat health: {0}", HeroSecond.HealthPointsNow);
                 if ((HeroFirst.IsAlive && HeroSecond.IsAlive))
                 {
                     HeroSecond.Attack(HeroFirst);
                     Thread.Sleep(50);
                     Console.WriteLine("Geralt attack Xardas!");
-                  message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
+                    message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
                     Thread.Sleep(50);
-                  //  Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
+                    //  Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
 
                 } i++;
             }
@@ -143,14 +145,14 @@ namespace WebRPGGame.Controllers
             if (HeroFirst.IsAlive)
             {
                 //if (!HeroSecond.head.Alive)
-              //      Console.WriteLine("Xardas cut Geralt head!");
+                //      Console.WriteLine("Xardas cut Geralt head!");
                 //Console.WriteLine("Xardas win");
 
             }
             else
             {
                 //if (!HeroSecond.head.Alive)
-                  //  Console.WriteLine("Geralt cut Xardas head!");
+                //  Console.WriteLine("Geralt cut Xardas head!");
                 //Console.WriteLine("Geralt win");
             }
 
