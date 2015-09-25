@@ -64,8 +64,10 @@ namespace WebRPGGame.Controllers.Account
                 ObservableCollection<ModelView> observableCollection = new ObservableCollection<ModelView>();
                 var command = new FbCommand();
                 command.Connection = conn;
-                string sqlCommand = @"select u.ref,u.login,h.name,h.level,h.strength,h.agility,h.defense from users u join heroes h on u.ref = h.""USER"" where u.ref is distinct from @ref";
-                command.Parameters.AddWithValue("@ref", ref1);
+                //string sqlCommand = @"select u.ref,u.login,h.name,h.level,h.strength,h.agility,h.defense from users u join heroes h on u.ref = h.""USER"" where u.ref is distinct from @ref";
+                string sqlCommand = "execute procedure GetHeroInfo(6)";
+                
+                //command.Parameters.AddWithValue("@ref", ref1);
                 command.CommandText = sqlCommand;
                 command.ExecuteScalar();
 

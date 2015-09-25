@@ -1,15 +1,12 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using ModelingObjectTask;
-using Monad.Parsec.Token.Numbers;
+using ModelingObjectTask.BodyParts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
-using WebRPGGame.DataAccess;
-using System.Threading.Tasks;
+
+
 
 namespace WebRPGGame.Controllers
 {
@@ -23,46 +20,51 @@ namespace WebRPGGame.Controllers
             return View();
         }
 
-        public FbDataReader GetInfoHero(string refinput)
+        public List<string> GetInfoHero(string refinput)
         {
+            List<string> readData = new List<string>();
             int ref1 = int.Parse(refinput);
-            var connectionString = DataAccess.DataAccess.CreateConectionString(
-                @"C:\Users\user\Documents\Visual Studio 2013\Projects\WebRPGGame\WebRPGGame\DataAccess\RPGDATABASE.fdb",
-                "SYSDBA", "masterkey", "WIN1250");
+          
+            string connectionString = DataAccess.DataAccess.CreateConectionString(
+                      @"C:\Users\user\Documents\Visual Studio 2013\Projects\WebRPGGame\WebRPGGame\DataAccess\RPGDatabase.fdb",
+                      "SYSDBA", "masterkey", "WIN1250");
 
             using (FbConnection conn = new FbConnection(connectionString))
             {
                 conn.Open();
-                var param1 = new FbParameter();
-                param1.ParameterName = "@REFERENSE1";
-                param1.Value = ref1;
 
-                var command1 = new FbCommand();
-                command1.Connection = conn;
-                command1.CommandText = string.Format(
-                                          @"execute procedure GetHeroInfo(@REFERENSE1);");
-                command1.Parameters.Add(param1);
+                var command = new FbCommand();
+                command.Connection = conn;
+                command.Parameters.AddWithValue("@REFERENSE1", 6);
+                command.CommandText = "execute procedure GetHeroInfo(6)";
+                command.ExecuteScalar();
 
-                FbDataReader reader = command1.ExecuteReader();
+                using (var reader = command.ExecuteReader())
+                {
 
-                return reader;
+                    int i = 0;
+                    while (reader.Read())
+                    {
+                        readData.Add(reader[i].ToString());
+                        i++;
+                    }
+                    return readData;
+                }
             }
         }
         public Warrior CreateWarrior(string refinput)
         {
-            using (var ReadData = GetInfoHero(refinput))
-            {
-                ReadData.Read();
-                Warrior Heroes = new Warrior()
-                   {
-                       Agility = int.Parse(ReadData["agility"].ToString()),
-                       DefensePoint = int.Parse(ReadData["defense"].ToString()),
-                       Strength = int.Parse(ReadData["strength"].ToString()),
-                       Name = ReadData["name"].ToString(),
-                       HealthPoints = int.Parse(ReadData["agility"].ToString())
-                   };
-                return Heroes;
-            }
+
+            //    ReadData.Read();
+            Warrior Heroes = new Warrior()
+               {
+                   //Agility = int.Parse(ReadData["agility"].ToString()),
+                   //DefensePoint = int.Parse(ReadData["defense"].ToString()),
+                   //Strength = int.Parse(ReadData["strength"].ToString()),
+                   //Name = ReadData["name"].ToString(),
+                   //HealthPoints = int.Parse(ReadData["agility"].ToString())
+               };
+            return Heroes;
         }
 
         public Mag CreateWizzard(string refinput)
@@ -71,11 +73,34 @@ namespace WebRPGGame.Controllers
 
             Mag Heroes = new Mag()
             {
-                Agility = int.Parse(ReadData["agility"].ToString()),
-                DefensePoint = int.Parse(ReadData["defense"].ToString()),
-                Strength = int.Parse(ReadData["strength"].ToString()),
-                Name = ReadData["name"].ToString(),
-                HealthPoints = int.Parse(ReadData["agility"].ToString())
+                Name = ReadData[0].ToString(),
+                Agility = int.Parse(ReadData[1].ToString()),
+                Strength = int.Parse(ReadData[2].ToString()),
+                DefensePoint = int.Parse(ReadData[4].ToString()),
+                HealthPoints = int.Parse(ReadData[6].ToString()),
+                HealthPointsNow = int.Parse(ReadData[6].ToString()),
+
+                Body = new Body
+                {
+                    Health = int.Parse(ReadData[9].ToString())
+                },
+                Head = new Head
+                {
+                    Health = int.Parse(ReadData[13].ToString())
+                },
+                LeftHand = new LeftHand
+                {
+                    Health = int.Parse(ReadData[11].ToString())
+                },
+                RightHand = new RightHand
+                {
+                    Health = int.Parse(ReadData[12].ToString())
+                },
+                Legs = new Legs
+                {
+                    Health = int.Parse(ReadData[10].ToString())
+                }
+
             };
             return Heroes;
         }
@@ -92,24 +117,20 @@ namespace WebRPGGame.Controllers
             return Json(new { success = true, message });
         }
 
-        public JsonResult CallToFight(string ID)
+        public JsonResult CallToFight(string ID, string MyID)
         {
-            var enemy = GetInfoHero(ID);
+            var message = "Przekierowuje";//enemy["Name"].ToString();
 
+            var Hero1 = GetInfoHero(ID);
 
-            return Json(new { success = true, enemy }, JsonRequestBehavior.AllowGet);
+            var Hero2 = GetInfoHero(MyID);
+
+            return Json(new { success = true, Hero1 }, JsonRequestBehavior.AllowGet);
         }
-
-
-
-
-
-
-
-
 
         public ActionResult Fight()
         {
+
             var HeroFirst = CreateWarrior("11");
             var HeroSecond = CreateWizzard("13");
 
@@ -122,13 +143,9 @@ namespace WebRPGGame.Controllers
                 message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
 
                 Thread.Sleep(50);
-                //     Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
+
                 Thread.Sleep(50);
 
-
-
-
-                //    Console.WriteLine("Gerlat health: {0}", HeroSecond.HealthPointsNow);
                 if ((HeroFirst.IsAlive && HeroSecond.IsAlive))
                 {
                     HeroSecond.Attack(HeroFirst);
@@ -136,25 +153,9 @@ namespace WebRPGGame.Controllers
                     Console.WriteLine("Geralt attack Xardas!");
                     message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
                     Thread.Sleep(50);
-                    //  Console.WriteLine("Xardas health: {0}", HeroFirst.HealthPointsNow);
-
                 } i++;
             }
-            //Console.WriteLine("End fight!");
-            //Console.WriteLine("Who win?");
-            if (HeroFirst.IsAlive)
-            {
-                //if (!HeroSecond.head.Alive)
-                //      Console.WriteLine("Xardas cut Geralt head!");
-                //Console.WriteLine("Xardas win");
 
-            }
-            else
-            {
-                //if (!HeroSecond.head.Alive)
-                //  Console.WriteLine("Geralt cut Xardas head!");
-                //Console.WriteLine("Geralt win");
-            }
 
             return null;
         }

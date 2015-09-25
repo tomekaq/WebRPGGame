@@ -15,7 +15,7 @@
                     for (i = 0; i < response.data.length; i++) {
                         load(response.data, i);
                     }
-                    blockButton(th);
+                    $("#getlist").prop("disabled", true);
 
                 },
                 error: function (xhr) {
@@ -48,14 +48,14 @@
 
        blockButton(th);
 
-        $(this).click(function () {
+      
             $.ajax({
                 url: '/Fight/CallToFight',
                 type: 'POST',
-                data: { ID: th },
+                data: { ID: th,MyID:3 },
                 success: function (response) {
 
-                    console.log(response.ref1);
+                    console.log(response.Hero1);
                 },
                 error: function (xhr) {
                     console.log("Error with get users list.");
@@ -63,11 +63,10 @@
             })
         });
 
-    });
     function blockButton(th) {
 
         var buttonID = "#" + th;
-        $('#table :input').prop("disabled", true);
+        $('#myTable :input').prop("disabled", true);
 
     }
 </script>

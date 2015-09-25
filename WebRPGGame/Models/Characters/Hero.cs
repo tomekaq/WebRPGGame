@@ -21,11 +21,11 @@ namespace ModelingObjectTask
         protected int moneyAmount;
         protected int strength;
 
-        public Body body;
-        public Head head;
-        public LeftHand leftHand;
-        public RightHand rightHand;
-        public Legs legs;
+        private Body body;
+        private Head head;
+        private LeftHand leftHand;
+        private RightHand rightHand;
+        private Legs legs;
 
         public abstract string Name { get; set; }
         public abstract int Strength { get; set; }
@@ -44,6 +44,52 @@ namespace ModelingObjectTask
                 body = value;
             }
         }
+
+        public Head Head
+        {
+            get
+            {
+                return head;
+            }
+            set
+            {
+                head = value;
+            }
+        }
+        public LeftHand LeftHand
+        {
+            get
+            {
+                return leftHand;
+            }
+            set
+            {
+                leftHand = value;
+            }
+        }
+        public RightHand RightHand
+        {
+            get
+            {
+                return rightHand;
+            }
+            set
+            {
+                rightHand = value;
+            }
+        }
+        public Legs Legs
+        {
+            get
+            {
+                return legs;
+            }
+            set
+            {
+                legs = value;
+            }
+        }
+
 
         public Hero()
         {

@@ -7,6 +7,8 @@ namespace WebRPGGame.DataAccess
 {
     public class ModelView
     {
+        public string REF { get; set; }        
+        public string User { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
         public int Strength { get; set; }
@@ -14,8 +16,5 @@ namespace WebRPGGame.DataAccess
         public int Defense { get; set; }
         public int Mana { get; set; }
 
-        public string User { get; set; }
-
-        public string REF { get; set; }
     }
 }
