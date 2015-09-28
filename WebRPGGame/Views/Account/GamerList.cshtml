@@ -3,7 +3,7 @@
     $(document).ready(function () {
         var t = 0;
         var th = "getlist"
-     
+
         $("#getlist").click(function () {
             $.ajax({
                 url: '/GamerList/GetGamerList',
@@ -26,7 +26,6 @@
     });
 
     function load(data, i) {
-
         var row = '<tr><td>' + data[i].User + '</td><td>'
             + data[i].Name + '</td><td>'
             + data[i].Level + '</td><td>'
@@ -46,51 +45,37 @@
         var th = $(this).context.id;
         console.log("cos kliknieto", th);
 
-       blockButton(th);
+        blockButton(th);
 
-      
-            $.ajax({
-                url: '/Fight/CallToFight',
-                type: 'POST',
-                data: { ID: th,MyID:3 },
-                success: function (response) {
+        $.ajax({
+            url: '/Fight/CallToFight',
+            type: 'POST',
+            data: { ID: th, MyID: 3 },
+            success: function (response) {
 
-                    console.log(response.Hero1);
-                },
-                error: function (xhr) {
-                    console.log("Error with get users list.");
-                }
-            })
-        });
+                console.log(response.Hero1);
+                redirecting();
+            },
+            error: function (xhr) {
+                console.log("Error with get users list.");
+            }
+        })
+    });
 
     function blockButton(th) {
 
         var buttonID = "#" + th;
         $('#myTable :input').prop("disabled", true);
-
     }
+
+    function redirecting() {
+        window.location = "../Fight/Index";
+    }
+
 </script>
 
 <style>
-    /*
-    .myTable {
-        display: table;
-        width: 100px;
-        border: 1px solid #000000;
-    }
 
-    .tableRow {
-        width: 30px;
-        height: 20px;
-        display: table-row;
-    }
-
-    .tableCell {
-        float: left;
-        width: 100px;
-        border: 1px solid #000000;
-        display: table-cell;
-    }*/
 
     table {
         background-color: #FFFFFF;

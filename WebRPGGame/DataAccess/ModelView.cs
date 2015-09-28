@@ -7,7 +7,7 @@ namespace WebRPGGame.DataAccess
 {
     public class ModelView
     {
-        public string REF { get; set; }        
+        public int REF { get; set; }        
         public string User { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }

@@ -64,21 +64,21 @@ namespace WebRPGGame.Controllers.Account
                 ObservableCollection<ModelView> observableCollection = new ObservableCollection<ModelView>();
                 var command = new FbCommand();
                 command.Connection = conn;
-                //string sqlCommand = @"select u.ref,u.login,h.name,h.level,h.strength,h.agility,h.defense from users u join heroes h on u.ref = h.""USER"" where u.ref is distinct from @ref";
-                string sqlCommand = "execute procedure GetHeroInfo(6)";
-                
-                //command.Parameters.AddWithValue("@ref", ref1);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                string sqlCommand = @"select u.ref,u.login,h.name,h.level,h.strength,h.agility,h.defense from users u join heroes h on u.ref = h.""USER"" where u.ref is distinct from @ref";
+                command.Parameters.AddWithValue("@ref", FbDbType.Integer).Value = ref1;
                 command.CommandText = sqlCommand;
+
                 command.ExecuteScalar();
 
                 using (var dataRead = command.ExecuteReader())
                 {
                     while (dataRead.Read())
-                    {
+
                         observableCollection.Add(
                             new ModelView()
                             {
-                                REF = dataRead.GetString(0).ToString(),
+                                REF = int.Parse(dataRead.GetString(0)),
                                 User = dataRead.GetString(1).ToString(),
                                 Name = dataRead.GetString(2).ToString(),
                                 Level = int.Parse(dataRead.GetString(3)),
@@ -86,12 +86,11 @@ namespace WebRPGGame.Controllers.Account
                                 Agility = int.Parse(dataRead.GetString(5)),
                                 Defense = int.Parse(dataRead.GetString(6))
                             });
-                    }
+
+                    return observableCollection;
                 }
-                return observableCollection;
             }
         }
-
         public JsonResult SendOne(ModelView model)
         {
             try

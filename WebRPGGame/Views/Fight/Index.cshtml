@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+    //$(document).ready(function () {
+
+    //    $.ajax({
+    //        url: "/Fight/Fight",
+    //        data: { HeroFirst: null, HeroSecond: null },
+
+    //        success: function () {
+
+    //        },
+    //        error: function (xhr) {
+    //            console.log(xhr.status);
+    //        }
+    //    });
+    //});
+
+    $(document).on('click', '#btnBack', function () {
+        window.location = "../Account/Index"
+
+    });
+    var messageList = [];
+
+    $().ready(function () {
+        aa = window.setInterval(function () {
+
+
+        }, 1000);
+    });
+
+
+    $(document).on('click', '#dodaj',
+    function addMessage() {
+        var row = '<canves>' + "bla" + '</canves>';
+        $row = $(row),
+           resort = false;
+        $('#frame').append($row);
+    });
+
+</script>
+<script>
+    //$(document).ready(function longPoll() {
+    //    $.ajax({
+    //        url: "/",
+    //        success: function (data) {
+    //            // do whatever you want with the data you received
+    //        },
+    //        error: function (err) {
+    //            // do whatever you want when error occurs
+    //        },
+    //        type: "GET",
+    //        dataType: "json",
+    //        complete: longPoll,
+    //        timeout: 60000 // timeout every one minute
+    //    });
+    //});
+
+
+
+</script>
+
+<style>
+    .inline {
+        display: inline-block;
+        margin-right: 2px;
+        margin-bottom: 10px;
+        margin-top: 4px;
+    }
+
+    div {
+        position: center;
+        border: 1px solid black;
+        bottom: 20px;
+        height: 90%;
+        width: 100%;
+    }
+</style>
+<div id="frame">
+
+</div>
+<input id="btnBack" class="inline" type="button" value="Wróć do głównego menu." />
+<input id="escapeBack" class="inline" type="button" value="Poddaj się." />
+<input id="dodaj" type="button" value="dodaj">
