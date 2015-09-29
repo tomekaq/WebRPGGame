@@ -41,39 +41,9 @@
         return false;
     };
 
-    $("body").on("click", "input", function () {
-        var th = $(this).context.id;
-        console.log("cos kliknieto", th);
-
-        blockButton(th);
-
-        $.ajax({
-            url: '/Fight/CallToFight',
-            type: 'POST',
-            data: { ID: th, MyID: 3 },
-            success: function (response) {
-
-                console.log(response.Hero1);
-                redirecting();
-            },
-            error: function (xhr) {
-                console.log("Error with get users list.");
-            }
-        })
-    });
-
-    function blockButton(th) {
-
-        var buttonID = "#" + th;
-        $('#myTable :input').prop("disabled", true);
-    }
-
-    function redirecting() {
-        window.location = "../Fight/Index";
-    }
 
 </script>
-
+<script src="~/Scripts/FightScript.js"></script>
 <style>
 
 

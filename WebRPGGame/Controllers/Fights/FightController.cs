@@ -145,69 +145,58 @@ namespace WebRPGGame.Controllers
         public JsonResult CallToFight(string ID, string MyID)
         {
             var message = "Przekierowuje";
-            var Hero1 = GetInfoHero(ID);
-
-            var Hero2 = GetInfoHero(MyID);
-
-            var t = Task.Run(() =>
-              {
-                  Fight(Hero1, Hero2);
-                  string message2 = "";
-                  return Json(new { success = true, message2 });
-              }
-            );
 
             return Json(new { success = true, message }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult Fight(Hero HeroFirst, Hero HeroSecond)
+        public JsonResult Fight(string ID, string MyID)
         {
-            Thread.Sleep(1000);
+     
+            var HeroFirst = GetInfoHero(ID);
+            var HeroSecond = GetInfoHero(MyID);
+            Thread.Sleep(100);
 
-            //int i = 0;
-            //while (HeroFirst.IsAlive && HeroSecond.IsAlive)
-            //{
-            string message = "";
-            Thread.Sleep(1000);
+            string message = "nic";
+            Thread.Sleep(100);
             //    HeroFirst.Attack(HeroSecond);
             message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
-            var turnMsg = Task.Run(() =>
-            {
-
-            });
+          
             var los = new Random();
-
-            if (los.Next(1, 2) == 1)
+            if (los.Next(2) == 1)
             {
                 var heroTemp = HeroFirst;
                 HeroFirst = HeroSecond;
                 HeroSecond = heroTemp;
-            }
-            //    Thread.Sleep(50);
+            }  
 
             Thread.Sleep(1000);
-            if ((HeroFirst.IsAlive && HeroSecond.IsAlive))
+           
+            while ((HeroFirst.IsAlive && HeroSecond.IsAlive))
             {
-
                 HeroFirst.Attack(HeroSecond);
                 message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
                 Json(new { success = true, message });
-
 
                 if ((HeroFirst.IsAlive && HeroSecond.IsAlive))
                 {
                     HeroSecond.Attack(HeroFirst);
                     
-                    //Console.WriteLine("Geralt attack Xardas!");
-                    message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
-                    Json(new { success = true, message });
                     
+                    //message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
+                    Json(new {success = true, message});  
                 }
             }
             //}
-            //string message = "skonczylem";
-            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
 
+            if (HeroFirst.IsAlive)
+            {
+                message = HeroFirst.Name + " win!";
+            }
+            else
+            {
+                message = HeroFirst.Name + " win!";
+            }
+            return Json(new {success = true,message}, JsonRequestBehavior.AllowGet);
         }
         public JsonResult TurnResult(string message)
         {
