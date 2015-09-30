@@ -2,11 +2,14 @@
 using ModelingObjectTask;
 using ModelingObjectTask.BodyParts;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using WebRPGGame.Code;
+using System.Text;
 
 
 
@@ -146,47 +149,62 @@ namespace WebRPGGame.Controllers
         {
             var message = "Przekierowuje";
 
-            return Json(new { success = true, message }, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true,ID,MyID }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Fight(string ID, string MyID)
         {
-     
+            Task.Run(() =>
+            {
+                InternalFight(ID, MyID);
+            });
+            string message = "OK";
+            return Json(new {success = true,message}, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetFight(string ID, string MyID)
+        {
+            string message = FightLogContainer.Get(ID+MyID)
+                .Aggregate(new StringBuilder(), (acc,e) => acc.AppendLine("<br/>"+ e), acc => acc.ToString());
+            return Json(new { success = true, message }, JsonRequestBehavior.AllowGet);
+        }
+
+        private void InternalFight(string ID, string MyID)
+        {
             var HeroFirst = GetInfoHero(ID);
             var HeroSecond = GetInfoHero(MyID);
-            Thread.Sleep(100);
-
-            string message = "nic";
-            Thread.Sleep(100);
-            //    HeroFirst.Attack(HeroSecond);
-            message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
-          
+            string message;
             var los = new Random();
             if (los.Next(2) == 1)
             {
                 var heroTemp = HeroFirst;
                 HeroFirst = HeroSecond;
                 HeroSecond = heroTemp;
-            }  
+            }
 
-            Thread.Sleep(1000);
-           
             while ((HeroFirst.IsAlive && HeroSecond.IsAlive))
             {
+                Thread.Sleep(10);
                 HeroFirst.Attack(HeroSecond);
                 message = string.Format("{0} attack {1}!", HeroFirst.Name, HeroSecond.Name);
-                Json(new { success = true, message });
+                FightLogContainer.Add(ID + MyID, message);
+                message = string.Format("{0} health {1}!", HeroFirst.Name, HeroFirst.HealthPointsNow);
+                FightLogContainer.Add(ID + MyID, message);
+                message = string.Format("{0} health {1}!", HeroSecond.Name, HeroSecond.HealthPointsNow);
+                FightLogContainer.Add(ID + MyID, message);
 
                 if ((HeroFirst.IsAlive && HeroSecond.IsAlive))
                 {
                     HeroSecond.Attack(HeroFirst);
-                    
-                    
-                    //message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
-                    Json(new {success = true, message});  
+
+                    message = string.Format("{0} attack {1}!", HeroSecond.Name, HeroFirst.Name);
+                    FightLogContainer.Add(ID + MyID, message);
+                    message = string.Format("{0} health {1}", HeroFirst.Name, HeroFirst.HealthPointsNow);
+                    FightLogContainer.Add(ID + MyID, message);
+                    message = string.Format("{0} health {1}!", HeroSecond.Name, HeroSecond.HealthPointsNow);
+                    FightLogContainer.Add(ID + MyID, message);
                 }
             }
-            //}
 
             if (HeroFirst.IsAlive)
             {
@@ -194,10 +212,11 @@ namespace WebRPGGame.Controllers
             }
             else
             {
-                message = HeroFirst.Name + " win!";
+                message = HeroSecond.Name + " win!";
             }
-            return Json(new {success = true,message}, JsonRequestBehavior.AllowGet);
+            FightLogContainer.Add(ID + MyID, message);
         }
+
         public JsonResult TurnResult(string message)
         {
             return Json(new { success = true, message });

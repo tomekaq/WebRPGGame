@@ -8,7 +8,7 @@
             $.ajax({
                 url: '/GamerList/GetGamerList',
                 type: 'POST',
-                data: { ref1: 3 },
+                data: { ref1: 7 },
                 success: function (response) {
 
                     console.log(response.data.length);
@@ -41,11 +41,9 @@
         return false;
     };
 
-
 </script>
 <script src="~/Scripts/FightScript.js"></script>
 <style>
-
 
     table {
         background-color: #FFFFFF;

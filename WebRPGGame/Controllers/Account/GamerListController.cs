@@ -74,7 +74,7 @@ namespace WebRPGGame.Controllers.Account
                 using (var dataRead = command.ExecuteReader())
                 {
                     while (dataRead.Read())
-
+                    {
                         observableCollection.Add(
                             new ModelView()
                             {
@@ -86,7 +86,7 @@ namespace WebRPGGame.Controllers.Account
                                 Agility = int.Parse(dataRead.GetString(5)),
                                 Defense = int.Parse(dataRead.GetString(6))
                             });
-
+                    }
                     return observableCollection;
                 }
             }
